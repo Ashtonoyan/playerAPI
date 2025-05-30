@@ -1,25 +1,11 @@
 import express from 'express';
-import {Client} from 'pg';
-import dotenv from 'dotenv';
-
-dotenv.config()
+import {client} from './db';
 
 const app = express();
 app.use(express.json());
-const number = Number(process.env.DB_PORT);
 
 
-const client = new Client(
-    {
-        user: process.env.DB_USER!,
-        host: process.env.DB_HOST!,
-        database: process.env.DB_NAME!,
-        password: process.env.DB_PASSWORD!,
-        port: number,
-    }
-);
-
-client.connect();
+client.connect()
 
 app.post('/players', async (req, res) => {
         const {name, team, position, goals} = req.body;
