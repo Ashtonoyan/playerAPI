@@ -3,33 +3,29 @@ Football Players API
 
 A simple REST API for managing football players, built with Node.js, Express, and PostgreSQL. The project includes automated API tests written with Playwright.
 
-🔧 Project Structure and Workflow:
+⚙️ Project Workflow
+This project follows a structured testing workflow:
 
-This project follows a clear and structured workflow:
+Create the PostgreSQL database
+Define the players table and set up your database locally.
 
-Create the PostgreSQL Database:
-
-A players table is created with fields such as id, name, team, position, and goals.
-
-Build the API with Express and PostgreSQL:
-
-A simple RESTful API is implemented in Node.js using Express. It supports full CRUD operations:
+Build the API with Express
+Implement endpoints for:
 
 POST /players – Create a new player
 
-GET /players/:id – Read a player by ID
+GET /players/:id – Read player info
 
 PUT /players/:id – Update a player
 
-DELETE /players/:id – Delete a player
+DELETE /players/:id – Remove a player
 
-Send API Requests in Automated Tests:
+Send API requests using Playwright
+Use Playwright’s built-in request context to test the endpoints.
 
-API requests are sent using Playwright’s request context to test each endpoint.
-
-Verify Results with SQL Queries:
-
-After each API request, an SQL query is executed directly on the database to verify that the data was correctly inserted, retrieved, updated, or deleted.
+Validate API behavior via SQL
+After each API call in the test, a SQL query is executed directly to verify changes in the database.
+For example, after creating a player via POST, a SELECT query checks if the record was created correctly.
 
 Technologies Used:
 
