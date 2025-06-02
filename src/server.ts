@@ -20,16 +20,28 @@ app.get('/players/:id', async (req, res) => {
         const result = await client.query('' +
             'SELECT * FROM players WHERE id = $1',
             [req.params.id]);
+        if (result.rows.length === 0) {
+                res.status(404).json({ error: 'Player not found' });
+                return;
+        }
+
         res.json(result.rows[0]);
+
 })
 
-app.put('/players/:id', async (req, res) => {
+app.put('/players/:id', (async (req, res: express.Response) => {
         const {name, team, position, goals} = req.body;
-        const result = await client.query('' +
-            'UPDATE players SET name = $1, team = $2, position = $3, goals = $4 WHERE id = $5',
+        const result = await client.query(
+            'UPDATE players SET name = $1, team = $2, position = $3, goals = $4 WHERE id = $5 RETURNING *',
             [name, team, position, goals, req.params.id]);
+
+        if (result.rows.length === 0) {
+                res.status(404).json({ error: 'Player not found' });
+                return;
+        }
+
         res.json(result.rows[0]);
-})
+}));
 
 app.delete('/players/:id', async (req, res) => {
         await client.query('' +
