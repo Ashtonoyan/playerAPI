@@ -21,10 +21,11 @@ test.describe('Players API', () => {
 
     const db = await client.query('SELECT * FROM players ' +
         'WHERE id=$1', [playerId]);
-    expect(db.rows[0].name).toBe('Leo Messi')
+    expect(db.rows[0].name).toBe(playerData.name);
   })
   test('get players', async ({ request }) => {
-    const data = await client.query('SELECT * FROM players LIMIT 1');
+    const data = await client.query('SELECT * FROM players ORDER BY id DESC LIMIT 1');
+
     const dataId = data.rows[0].id;
     const dataName = data.rows[0].name;
     const dataTeam = data.rows[0].team;
@@ -45,7 +46,7 @@ test.describe('Players API', () => {
 
 
   test('update player', async ({ request }) => {
-    const data = await client.query('SELECT * FROM players LIMIT 1');
+    const data = await client.query('SELECT * FROM players ORDER BY id DESC LIMIT 1');
     const dataId = data.rows[0].id;
     const playerData = DataFactory.updateData()
 
@@ -55,9 +56,14 @@ test.describe('Players API', () => {
 
     })
     expect(response.status()).toBe(200);
+
     const db = await client.query('SELECT * FROM players ' +
         'WHERE id=$1', [dataId]);
-    expect(db.rows[0].goals).toBe(25);
+
+    expect(db.rows[0].name).toBe(playerData.name);
+    expect(db.rows[0].team).toBe(playerData.team);
+    expect(db.rows[0].position).toBe(playerData.position);
+    expect(db.rows[0].goals).toBe(playerData.goals);
   })
 
   test('delete player', async ({ request }) => {
